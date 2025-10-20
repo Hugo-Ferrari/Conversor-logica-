@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import {runWorkflow} from "@/chat/chatkit";
 
 export default function Inicio() {
   const [frase, setFrase] = useState("");
@@ -8,15 +9,11 @@ export default function Inicio() {
 
   const enviarFrase = async () => { //função assincrona basica para conseguirmos chamar a api 
     try {
-      const resp = await fetch("http://127.0.0.1:5000/nl-cpc", { //url onde a api esta, portando vamos chamar ela por aqui
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ frase }),
-      });
+        const resp = await runWorkflow({input_as_text: frase})
 
 
-      const data = await resp.json();
-      setResultado(data.resultado);
+      const data = resp["message"];
+      setResultado(data);
     } catch (erro) {
       console.error("Erro ao conectar à API:", erro);
       setResultado("Erro: não foi possível conectar ao servidor Flask.");
