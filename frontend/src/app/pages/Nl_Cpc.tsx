@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {runWorkflow} from "@/chat/chatkit";
+import { runWorkflow } from "@/chat/chatkit";
 
 export default function Inicio() {
   const [frase, setFrase] = useState("");
@@ -41,7 +41,7 @@ export default function Inicio() {
       {resultado && (
         <div className="mt-4 p-3 bg-white border rounded-md w-96 whitespace-pre-line">
           <strong>Resultado:</strong>
-          <p>{resultado}</p>
+            <div dangerouslySetInnerHTML={resultado}></div>
         </div>
       )}
     </div>

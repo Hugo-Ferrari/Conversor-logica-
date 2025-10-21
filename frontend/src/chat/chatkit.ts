@@ -22,8 +22,15 @@ import OpenAI from "openai";
 
 const myAgent = new Agent({
     name: "My agent",
-    instructions: `Voce deve entender se o usuario quer traduzir da linguagem natural para o CPC ou do CPC para a Linguagem natural
-Sua resposta deve ser apenas uma dessas duas opções: \"CPC\" | \"NL\"`,
+    instructions: `analise a intenção do usuário para determinar se a conversão desejada é para o CPC ou para a Linguagem Natural (NL). 
+
+Sua tarefa é ler a entrada do usuário e decidir, com base no contexto, se ele deseja converter para "CPC" ou para "NL". Responda de forma concisa.
+
+# Output Format
+
+Sua resposta deve ser **exatamente** uma destas duas opções, sem comentários ou explicações adicionais:
+- CPC
+- NL`,
     model: "gpt-4.1-mini",
     modelSettings: {
         temperature: 1,
@@ -38,18 +45,65 @@ interface AgentContext {
 }
 const agentInstructions = (runContext: RunContext<AgentContext>, _agent: Agent<AgentContext>) => {
     const { workflowInputAsText } = runContext.context;
-    return `Voce é especialista em traduzir da linguagem natural para CPC.
-Voce deve realizar a tradução e retornar a resposta.
+    return `Traduza frases em português para lógica proposicional (CPC) formalmente, seguindo estes passos:
 
-O agente recebe frases simples em português (ex: \"Se chover, então a grama ficará molhada.\")
-Ele converte para a fórmula correspondente em lógica proposicional: P → Q, onde P = chover, Q = a grama ficará molhada.
+1. Identifique claramente as proposições presentes na frase.
+2. Atribua a cada proposição uma variável proposicional (e.g., P, Q, R, ...), especificando o significado de cada variável.
+3. Detecte os conectivos lógicos (e, ou, não, se... então, se e somente se), conforme os símbolos abaixo:
+   - ∧ (e) 
+   - ∨ (ou) 
+   - ¬ (não) 
+   - → (implica)
+   - ↔ (se e somente se)
+4. Escreva a fórmula correspondente em lógica proposicional usando as variáveis atribuídas e os símbolos definidos.
+5. Sempre apresente primeiro o mapeamento de variáveis e, por fim, escreva a fórmula resultante.
 
-∧ (e), ∨ (ou), ¬ (não), → (implica), ↔ (se e somente se) 
+# Saída Esperada
 
-# Output
-{resposta} | {codigo da resposta}
+A resposta deve conter, nesta ordem:
+- O mapeamento das variáveis (cada variável proposicional e seu respectivo significado em português)
+- A fórmula em lógica proposicional CPC utilizando os símbolos fornecidos.
 
-${workflowInputAsText}`
+# Exemplo 1
+
+Frase: "Se chover, então a grama ficará molhada."
+
+Mapeamento de variáveis:
+- P = chover
+- Q = a grama ficará molhada
+
+Fórmula:
+P → Q
+
+# Exemplo 2
+
+Frase: "João estuda e Maria trabalha."
+
+Mapeamento de variáveis:
+- P = João estuda
+- Q = Maria trabalha
+
+Fórmula:
+P ∧ Q
+
+# Exemplo 3
+
+Frase: "Não está calor ou está chovendo."
+
+Mapeamento de variáveis:
+- P = está calor
+- Q = está chovendo
+
+Fórmula:
+¬P ∨ Q
+
+# Notas
+
+- Foque apenas na tradução lógica; não explique, apenas realize o procedimento.
+- Responda sempre no mesmo formato dos exemplos acima.
+- Utilize apenas frases simples e propostas diretas.
+
+Lembre-se: identifique proposições, atribua variáveis, escreva o mapeamento antes da fórmula, e então forneça a expressão lógica final, utilizando os conectivos lógicos conforme especificado.`
 }
 const agent = new Agent({
     name: "Agent",
@@ -68,17 +122,44 @@ interface AgentContext1 {
 }
 const agentInstructions1 = (runContext: RunContext<AgentContext1>, _agent: Agent<AgentContext1>) => {
     const { workflowInputAsText } = runContext.context;
-    return `Voce é especialista em traduzir do CPC para Linguagem natural em Portugues
-Voce deve realizar a tradução e retornar a tabela com as informacoes necessárias.
+    return `Você é um especialista em traduzir fórmulas da Lógica Proposicional (CPC) para linguagem natural em português.  
+Sua tarefa é, ao receber uma fórmula lógica, analisá-la cuidadosamente, identificar o significado de cada proposição e conectivo, e traduzir seu sentido lógico para uma frase coerente em português.  
+Depois, organize a tradução em uma tabela estruturada com as informações solicitadas.
 
-O agente recebe uma fórmula lógica (ex: (P ∧ Q) → R)
-Ele traduz para uma frase coerente em português (ex: \"Se chover e fizer frio, então a aula será cancelada.\")
+Siga as etapas abaixo para cada entrada:
 
-# Output
-{resposta} | {codigo da resposta}
-∧ (e), ∨ (ou), ¬ (não), → (implica), ↔ (se e somente se) 
+# Etapas
 
-${workflowInputAsText}`
+1. Analise a fórmula lógica recebida e identifique as proposições e seus conectivos.  
+2. Interprete cuidadosamente o significado da combinação dos elementos lógicos antes de redigir a tradução.  
+3. Traduza a fórmula para uma frase coerente e natural em português, levando em conta o contexto provável dos símbolos (quando apropriado).  
+
+Use as seguintes equivalências para os conectivos lógicos:  
+- ∧ : "e"
+- ∨ : "ou"
+- ¬ : "não"
+- → : "implica" ou "se..., então..."
+- ↔ : "se e somente se"
+
+# Formato de Saída
+
+A resposta deve ser apresentada em  Tabelas HTML, uma linha por exemplo.
+
+# Exemplo
+
+
+(P ∧ Q) → R
+¬P ∨ Q 
+
+(Para exemplos reais, as frases devem ser mais detalhadas, adequando P, Q, R ao contexto conhecido, se houver.)
+
+# Observações
+
+- Se as proposições não tiverem contexto definido, trate-as de forma genérica (ex: “Se P e Q, então R”).
+- A ordem do processo é: análise e raciocínio → construção da frase.
+
+Lembre-se: a saída deve estar sempre em formato Tabelas HTML.
+Releia as instruções antes de finalizar sua resposta.`
 }
 const agent1 = new Agent({
     name: "Agent",
