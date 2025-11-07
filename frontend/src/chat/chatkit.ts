@@ -11,11 +11,14 @@ import OpenAI from "openai";
             setDefaultModelProvider(new OpenAIProvider({ openAIClient: openai }));
 
             // Back-compat for any code that still relies on process.env inside libs
-            (globalThis as any).process = (globalThis as any).process || { env: {} };
-            (globalThis as any).process.env = (globalThis as any).process.env || {};
-            (globalThis as any).process.env.OPENAI_API_KEY = key;
+            // Use a typed helper to avoid `any` casts on globalThis
+            type GlobalProcessEnv = { process?: { env?: Record<string, string> } };
+            const g = globalThis as unknown as GlobalProcessEnv;
+            g.process = g.process || { env: {} };
+            g.process.env = g.process.env || {};
+            g.process.env.OPENAI_API_KEY = key;
         }
-    } catch (_e) {
+    } catch {
         // no-op: best effort
     }
 })();
@@ -43,8 +46,10 @@ Sua resposta deve ser **exatamente** uma destas duas opções, sem comentários 
 interface AgentContext {
     workflowInputAsText: string;
 }
-const agentInstructions = (runContext: RunContext<AgentContext>, _agent: Agent<AgentContext>) => {
-    const { workflowInputAsText } = runContext.context;
+const agentInstructions = (runContext: RunContext<AgentContext>) => {
+    // mark param as used for linters (the RunContext is available if you need it)
+    void runContext;
+    // If needed, `runContext.context.workflowInputAsText` is available here
     return `Traduza frases em português para lógica proposicional (CPC) formalmente, seguindo estes passos:
 
 1. Identifique claramente as proposições presentes na frase.
@@ -57,12 +62,13 @@ const agentInstructions = (runContext: RunContext<AgentContext>, _agent: Agent<A
    - ↔ (se e somente se)
 4. Escreva a fórmula correspondente em lógica proposicional usando as variáveis atribuídas e os símbolos definidos.
 5. Sempre apresente primeiro o mapeamento de variáveis e, por fim, escreva a fórmula resultante.
-
+6. Depois, organize a tradução em uma tabela estruturada com as informações solicitadas.
 # Saída Esperada
 
 A resposta deve conter, nesta ordem:
 - O mapeamento das variáveis (cada variável proposicional e seu respectivo significado em português)
 - A fórmula em lógica proposicional CPC utilizando os símbolos fornecidos.
+- A resposta deve ser apresentada em  Markdown, uma linha por exemplo.
 
 # Exemplo 1
 
@@ -120,8 +126,10 @@ const agent = new Agent({
 interface AgentContext1 {
     workflowInputAsText: string;
 }
-const agentInstructions1 = (runContext: RunContext<AgentContext1>, _agent: Agent<AgentContext1>) => {
-    const { workflowInputAsText } = runContext.context;
+const agentInstructions1 = (runContext: RunContext<AgentContext1>) => {
+    // mark param as used for linters (the RunContext is available if you need it)
+    void runContext;
+    // If needed, `runContext.context.workflowInputAsText` is available here
     return `Você é um especialista em traduzir fórmulas da Lógica Proposicional (CPC) para linguagem natural em português.  
 Sua tarefa é, ao receber uma fórmula lógica, analisá-la cuidadosamente, identificar o significado de cada proposição e conectivo, e traduzir seu sentido lógico para uma frase coerente em português.  
 Depois, organize a tradução em uma tabela estruturada com as informações solicitadas.
@@ -232,10 +240,7 @@ export const runWorkflow = async (workflow: WorkflowInput) => {
             const agentResult = {
                 output_text: agentResultTemp.finalOutput ?? ""
             };
-            const endResult = {
-                message: agentResult.output_text
-            };
-            return endResult;
+            return { message: agentResult.output_text };
         } else {
             const agentResultTemp = await runner.run(
                 agent1,
@@ -257,10 +262,7 @@ export const runWorkflow = async (workflow: WorkflowInput) => {
             const agentResult = {
                 output_text: agentResultTemp.finalOutput ?? ""
             };
-            const endResult = {
-                message: agentResult.output_text
-            };
-            return endResult;
+            return { message: agentResult.output_text };
         }
     });
 }

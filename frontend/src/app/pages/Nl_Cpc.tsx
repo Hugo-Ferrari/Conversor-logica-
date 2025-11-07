@@ -104,7 +104,7 @@ export default function Inicio() {
       </button>
 
       {resultado && (
-        <div className="mt-4 p-3 bg-white border rounded-md w-96 whitespace-pre-line">
+        <div className="mt-4 p-3 bg-white border rounded-md w-96 lg:w-140 whitespace-pre-line">
           <strong>Resultado:</strong>
           <div dangerouslySetInnerHTML={{ __html: resultado }}></div>
         </div>
