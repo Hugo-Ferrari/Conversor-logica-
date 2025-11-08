@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Convertex",
-  description: "Criado com muito <3 por Arthur, Sofia, Hugo e Yasmin",
+  description: "Criado com muito <3 por Arthur, Sofia, Hugo e Yasmim",
 };
 
 export default function RootLayout({

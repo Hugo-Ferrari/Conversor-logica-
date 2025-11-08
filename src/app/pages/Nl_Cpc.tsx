@@ -104,9 +104,9 @@ export default function Inicio() {
       </button>
 
       {resultado && (
-        <div className="mt-4 p-3 bg-white border rounded-md w-96 lg:w-140 whitespace-pre-line">
+        <div className="mt-8 w-full max-w-md p-5 from-blue-50 to-white border border-blue-200 rounded-2xl shadow-md animate-fadeIn">
           <strong>Resultado:</strong>
-          <div dangerouslySetInnerHTML={{ __html: resultado }}></div>
+          <div dangerouslySetInnerHTML={{ __html: resultado }} className="p-3 text-md text-gray-700 leading-relaxed whitespace-pre-line"></div>
         </div>
       )}
     </div>
