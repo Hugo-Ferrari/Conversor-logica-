@@ -37,10 +37,8 @@ significados definido pelo usuário.
     |     * "e", "ou", "não"        |                         |   conectivos                  |
     | - Extração das proposições    |                         | - Conversão da fórmula        |
     | - Geração da fórmula lógica   |                         |   para estruturas NL          |
-    | - LLM opcional para casos     |                         | - Geração textual final       |
-    |   complexos                   |                         | - LLM opcional para maior     |
     +-------------------------------+                         |   naturalidade                |
-                    |                                             +---------------------------+
+                    |                                         +-------------------------------+
                     |                                                            |
                     v                                                            v
     +------------------------------------------------------------------------------------------+
@@ -97,7 +95,6 @@ Saída: *"Se P e Q forem verdadeiros, então R acontecerá."*
 
 -   LLM pode gerar pequenas variações na frase final.
 -   Regras simples podem falhar em frases contraditórias.
--   O sistema não mantém contexto entre traduções.
 -   Complexidade sintática ainda limitada.
 
 ### Melhorias Futuras
@@ -114,3 +111,14 @@ Saída: *"Se P e Q forem verdadeiros, então R acontecerá."*
 
 vídeo demonstrando o agente de IA
 
+------------------------------------------------------------------------
+
+## 5. Link para acessar o sistema
+
+[Acesso ao sistema](https://conversor-logica.vercel.app)
+
+------------------------------------------------------------------------
+
+#### Autores: Arthur Pavan, Hugo Ferrari, Sofia Cueto e Yasmim Alves
+#### Tecnologia: React, TypeScript, Tailwind CSS e Agente da OpenAI
+#### Deploy: Vercel
