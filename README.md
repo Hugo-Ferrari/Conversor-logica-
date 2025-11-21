@@ -63,7 +63,7 @@ significados definido pelo usuário.
 
 A tradução usa três etapas principais:
 
-### 🔁 NL → CPC
+###  NL → CPC
 
 -   Identificação de padrões como "se... então...", "e", "ou", "não".
 -   Extração de proposições simples.
@@ -72,7 +72,7 @@ A tradução usa três etapas principais:
 -   Aplicação de regras de lógica proposicional.
 -   Uso de LLM como fallback em frases mais complexas.
 
-### 🔁 CPC → NL
+###  CPC → NL
 
 -   Parsing da estrutura lógica.
 -   Conversão dos conectivos para linguagem natural.
