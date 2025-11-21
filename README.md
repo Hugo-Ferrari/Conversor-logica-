@@ -96,7 +96,7 @@ Saída: *"Se P e Q forem verdadeiros, então R acontecerá."*
 ### Limitações
 
 -   LLM pode gerar pequenas variações na frase final.
--   Regras simples podem falhar em frases ambíguas.
+-   Regras simples podem falhar em frases contraditórias.
 -   O sistema não mantém contexto entre traduções.
 -   Complexidade sintática ainda limitada.
 
@@ -105,12 +105,12 @@ Saída: *"Se P e Q forem verdadeiros, então R acontecerá."*
 -   Regras linguísticas mais avançadas.
 -   Expansão do banco de significados.
 -   Detecção automática de idioma.
--   Aperfeiçoamento do parser lógico.
+-   Aperfeiçoamento do decodificador lógico.
 -   Redução da dependência de LLM para casos simples.
 
 ------------------------------------------------------------------------
 
 ## 4. Vídeo Demonstração
 
-📹 Link do vídeo demonstrando o agente de IA:\
-**\[INSERIR LINK AQUI\]**
+vídeo demonstrando o agente de IA
+
