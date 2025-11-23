@@ -109,7 +109,10 @@ Saída: *"Se P e Q forem verdadeiros, então R acontecerá."*
 
 ## 4. Vídeo Demonstração
 
-vídeo demonstrando o agente de IA
+vídeo demonstrando o agente de IA (Clique abaixo)
+<a href="https://drive.google.com/drive/folders/1Hr35eGN8LtFsIBcJgkDILPUgnNNQH1QN?usp=sharing">
+    <img src="./capa.png">
+</a>
 
 ------------------------------------------------------------------------
 
