@@ -17,13 +17,13 @@ export default function Inicio() {
   const [typedText, setTypedText] = useState("");
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout | undefined;
+    let intervalId: NodeJS.Timeout | null = null;
 
     const startDelay = setTimeout(() => {
       intervalId = setInterval(() => {
         setTypedText((currentText) => {
           if (currentText.length === fullText.length) {
-            clearInterval(intervalId);
+            clearInterval(intervalId!);
             return currentText;
           }
           return fullText.substring(0, currentText.length + 1);
@@ -57,7 +57,7 @@ export default function Inicio() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-gray-800 p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-gray-800 p-4 sm:p-6">
       
       <div className="relative flex flex-col items-center mb-4">
         
@@ -82,13 +82,14 @@ export default function Inicio() {
           width={120}
           height={120}
           priority
+          className="w-24 h-24 sm:w-30 sm:h-30" // Ajuste responsivo para imagem
         />
       </div>
 
-      <h1 className="text-2xl font-bold mb-4">Conversor de Lógica</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">Conversor de Lógica</h1>
 
       <textarea
-        className="border border-blue-300 p-2 w-96 h-24 rounded-md mb-6 bg-white-500 hover:border-blue-700 focus:border-blue-900 focus:outline-none disabled:bg-gray-200 border-1.5 bg-white"
+        className="border border-blue-300 p-2 w-full max-w-md h-24 rounded-md mb-6 bg-white hover:border-blue-700 focus:border-blue-900 focus:outline-none disabled:bg-gray-200 border-1.5"
         placeholder="Digite uma frase (ex: Se chover, então a grama ficará molhada)"
         value={frase}
         onChange={(e) => setFrase(e.target.value)}
@@ -104,9 +105,9 @@ export default function Inicio() {
       </button>
 
       {resultado && (
-        <div className="mt-8 w-full max-w-md p-5 from-blue-50 to-white border border-blue-200 rounded-2xl shadow-md animate-fadeIn">
+        <div className="mt-8 w-full max-w-md p-4 sm:p-5 bg-linear-to-r from-blue-50 to-white border border-blue-200 rounded-2xl shadow-md animate-fadeIn">
           <strong>Resultado:</strong>
-          <div dangerouslySetInnerHTML={{ __html: resultado }} className="p-3 text-md text-gray-700 leading-relaxed whitespace-pre-line"></div>
+          <div dangerouslySetInnerHTML={{ __html: resultado }} className="p-3 text-sm sm:text-md text-gray-700 leading-relaxed whitespace-pre-line"></div>
         </div>
       )}
     </div>
